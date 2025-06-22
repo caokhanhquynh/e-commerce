@@ -6,6 +6,12 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  // example React fetch call
+  fetch(`http://localhost:3000/api/hello`)
+  .then(res => res.json())
+  .then(data => console.log(data.message));
+
+
   return (
     <>
       <div>
