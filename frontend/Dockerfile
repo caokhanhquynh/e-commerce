@@ -1,19 +1,13 @@
-# frontend/Dockerfile
-
-FROM node:18
+# Build step
+FROM node:18 as build
 
 WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
 COPY . .
+RUN npm install && npm run build
 
-RUN npm run build
+# Serve with Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Serve with a static file server
-RUN npm install -g serve
-
-EXPOSE 5173
-
-CMD ["serve", "-s", "dist"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
