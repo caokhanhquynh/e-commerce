@@ -5,9 +5,10 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   // example React fetch call
-  fetch(`http://localhost:3000/api/hello`)
+  fetch(`${API_URL}/api/hello`)
   .then(res => res.json())
   .then(data => console.log(data.message));
 
