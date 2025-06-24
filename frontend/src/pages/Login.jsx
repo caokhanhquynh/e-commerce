@@ -7,9 +7,9 @@ function Login() {
     console.log('🔍 Type:', typeof import.meta.env.VITE_API_URL);
     console.log('🔍 Length:', import.meta.env.VITE_API_URL?.length);
     
-    const API_URL = import.meta.env.VITE_API_URL?.trim() || 'http://localhost:3001';
+    const API_URL = import.meta.env.VITE_API_URL?.trim() || 'https://backend-production-1980.up.railway.app';
     console.log('🔍 Final API_URL:', API_URL);
-    
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
