@@ -7,14 +7,14 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    fetch(`${API_URL}/users/sellers`)
+    fetch(`${API_URL}/api/sellers`)
     .then(res => res.json())
     .then(data => console.log(data));
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-        const res = await axios.post(`${API_URL}/api/auth/login`, {
+        const res = await axios.post(`${API_URL}/api/login`, {
             email,
             password
         });
