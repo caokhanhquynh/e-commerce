@@ -2,10 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Badge from '@mui/material/Badge';
-import MailIcon from '@mui/icons-material/Mail';
 import Navbar from './components/Navbar';
+import Login from './pages/Login';
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -19,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
