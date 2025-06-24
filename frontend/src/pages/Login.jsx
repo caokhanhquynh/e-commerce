@@ -21,7 +21,6 @@ function Login() {
         { withCredentials: true }
         );
         console.log("im here", res);
-        localStorage.setItem('token', res.data.token);
         alert('Logged in!');
         } catch (err) {
         alert('Login failed');
