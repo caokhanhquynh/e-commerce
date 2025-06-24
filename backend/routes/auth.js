@@ -43,8 +43,8 @@ router.post('/login', async (req, res) => {
         if (result.rows.length === 0) return res.status(400).json({ msg: 'User not found' });
 
         const sellers = result.rows[0];
-        // const match = await bcrypt.compare(password, sellers.password);
-        const match = (password == sellers.password)
+        const match = await bcrypt.compare(password, sellers.password);
+        // const match = (password == sellers.password)
         if (!match) return res.status(401).json({ msg: 'Invalid credentials' });
 
         const token = jwt.sign({ id: sellers.id, email: sellers.email }, JWT_SECRET, { expiresIn: '1h' });
