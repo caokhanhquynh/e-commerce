@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const apiRoutes = require('./routes/api');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.use(express.json()); // Parses JSON in requests
 
 // Routes
 app.use('/api', apiRoutes);
+app.use('/users', userRoutes);
 
 ///////// Database /////////////////////
 const { Pool } = require('pg');
