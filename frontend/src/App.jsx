@@ -5,6 +5,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
+import Navbar from './components/Navbar';
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -14,19 +15,7 @@ function App() {
   .then(data => console.log(data.message));
   return (
     <Router>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <Button variant="contained">Hello world</Button>
-      <Badge badgeContent={4} color="primary">
-        <MailIcon color="action" />
-      </Badge>
-
-      <nav style={{ padding: '1rem' }}>
-        <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-        <Link to="/about">About</Link>
-      </nav>
-      
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
