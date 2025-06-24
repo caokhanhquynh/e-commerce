@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function Login() {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

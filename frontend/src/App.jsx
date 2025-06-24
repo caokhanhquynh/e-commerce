@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 function App() {
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   // example React fetch call
   fetch(`${API_URL}/api/hello`)
   .then(res => res.json())
