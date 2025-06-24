@@ -5,37 +5,20 @@ require('dotenv').config();
 
 const apiRoutes = require('./routes/api');
 const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // Parses JSON in requests
+app.use(express.json()); 
 
 // Routes
 app.use('/api', apiRoutes);
 app.use('/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
-///////// Database /////////////////////
-const { Pool } = require('pg');
-require('dotenv').config();
-
-// PostgreSQL connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// Example API route
-app.get('/api/accounts', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM accounts');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error querying database:', err);
-    res.status(500).send('Database error');
-  }
-});
 /////////////////////////////////////////
 
 // Start server
