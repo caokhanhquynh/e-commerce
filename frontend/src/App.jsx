@@ -4,6 +4,7 @@ import About from './pages/About';
 import * as React from 'react';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
