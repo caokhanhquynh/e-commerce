@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function Signup() {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const [formData, setFormData] = useState({
         email: '',
         password: '',
