@@ -10,6 +10,9 @@ function App() {
   .then(data => console.log(data.message));
   return (
     <Router>
+      <h1 className="text-3xl font-bold underline">
+        Hello world!
+      </h1>
       <nav style={{ padding: '1rem' }}>
         <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
         <Link to="/about">About</Link>
