@@ -21,6 +21,13 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true
+  });
+  res.json({ success: true });  
+
   try {
       const result = await pool.query('SELECT * FROM sellers WHERE email = $1', [email]);
       if (result.rows.length === 0) return res.status(400).json({ msg: 'User not found' });

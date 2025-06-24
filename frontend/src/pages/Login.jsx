@@ -7,7 +7,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    fetch(`${API_URL}/api/sellers`)
+    fetch(`${API_URL}/api/sellers`, {credentials: 'include'})
     .then(res => res.json())
     .then(data => console.log(data));
 
@@ -17,7 +17,9 @@ function Login() {
         const res = await axios.post(`${API_URL}/api/login`, {
             email,
             password
-        });
+        },
+        { withCredentials: true }
+        );
         console.log("im here", res);
         localStorage.setItem('token', res.data.token);
         alert('Logged in!');
