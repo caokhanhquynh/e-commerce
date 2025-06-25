@@ -1,5 +1,13 @@
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import ProductGrid from "../components/ProductGird";
+
 function Home() {
-    return <h1>Welcome to the Home Page</h1>;
+    return <>
+      <Hero />
+      <ProductGrid />
+      <Footer />
+    </>;
   }
   
   export default Home;
