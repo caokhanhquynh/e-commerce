@@ -9,6 +9,9 @@ function Login() {
     
     const API_URL = import.meta.env.VITE_API_URL?.trim() || 'https://backend-production-1980.up.railway.app';
     console.log('🔍 Final API_URL:', API_URL);
+    console.log('🔍 Final API_URL:', import.meta.env.RAILWAY_PUBLIC_DOMAIN);
+    console.log('🔍 Final API_URL:', import.meta.env.MESS);
+
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
