@@ -6,12 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
-    plugins: [react()],
-    css: {
-      postcss: {
-        plugins: [tailwindcss()],
-      },
-    },
+    plugins: [react(), tailwindcss()],
     define: {
       'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL),
       'import.meta.env.VITE_MESS': JSON.stringify(env.VITE_API_MESS),
