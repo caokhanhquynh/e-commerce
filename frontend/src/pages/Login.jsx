@@ -7,7 +7,7 @@ function Login() {
     console.log('🔍 Type:', typeof import.meta.env.VITE_API_URL);
     console.log('🔍 Length:', import.meta.env.VITE_API_URL?.length);
     
-    const API_URL = import.meta.env.VITE_API_URL?.trim() || 'https://backend-production-1980.up.railway.app';
+    const API_URL = __API_URL__;
     console.log('🔍 Final API_URL:', API_URL);
     console.log('🔍 Final API_URL:', import.meta.env.RAILWAY_PUBLIC_DOMAIN);
     console.log('🔍 Final API_URL:', import.meta.env.VITE_MESS);
