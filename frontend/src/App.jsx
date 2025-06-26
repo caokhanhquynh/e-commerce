@@ -12,6 +12,7 @@ function App() {
   fetch(`${API_URL}/api/hello`)
   .then(res => res.json())
   .then(data => console.log(data.message));
+  
   return (
     <Router>
       <Navbar/>
