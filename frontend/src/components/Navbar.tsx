@@ -1,7 +1,55 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+type User = {
+  id: string;
+  email: string;
+  name: string;
+};
 
 const Header: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUserData();
+    }
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token');
+        return;
+      }
+      setUser({
+        id: payload.id,
+        email: payload.email,
+        name: payload.name,
+      });
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      // Clear invalid token
+      localStorage.removeItem('token');
+    }
+  };
+
+  const handleLogout = () => {
+    // Clear token
+    localStorage.removeItem('token');
+    setUser(null);
+    setIsLoggedIn(false);
+  };
+
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,14 +78,32 @@ const Header: React.FC = () => {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
+
+          {isLoggedIn && user ? (
+            <div className="flex items-center space-x-3">
+              <span className="text-gray-700 text-sm font-medium">
+                Welcome, {user.name}
+              </span>
+              <button 
+                onClick={handleLogout}
+                className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                Logout
+              </button>
+            </div>):(
             <div className="hidden sm:flex items-center space-x-3">
-              <button className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                Login
-              </button>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
-                Sign Up
-              </button>
-            </div>
+              <Link to="/login">
+                <button className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                  Login
+                </button>
+              </Link>
+              
+              <Link to="/register">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                  Sign Up
+                </button>
+              </Link>
+            </div>)}
             
             {/* Mobile menu button */}
             <button className="md:hidden p-2 rounded-md text-gray-700 hover:text-orange-500 transition-colors duration-200">

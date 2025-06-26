@@ -11,12 +11,15 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${API_URL}/api/login`, {
+            const res = await axios.post(`${API_URL}/api/auth/login`, {
                 email,
                 password
-            },
-            { withCredentials: true }
-            );
+            });
+    
+            const token = res.data.token;
+            localStorage.setItem('token', token);
+    
+            window.location.href = '/';
             alert('Logged in!');
         } catch (err) {
             alert('Login failed', err);
