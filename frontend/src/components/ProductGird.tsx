@@ -52,8 +52,7 @@ const ProductGrid: React.FC = () => {
       id: 4,
       name: "Ergonomic Office Chair",
       price: 299.99,
-      originalPrice: 399.99,
-      rating: 4.6,
+       rating: 4.6,
       reviews: 89,
       image: "https://images.pexels.com/photos/586768/pexels-photo-586768.jpeg?auto=compress&cs=tinysrgb&w=400",
       discount: 25
