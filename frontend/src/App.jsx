@@ -5,6 +5,7 @@ import * as React from 'react';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AddItemForm from './pages/AddItem';
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/add_items" element={<AddItemForm />} />
       </Routes>
     </Router>
   );
