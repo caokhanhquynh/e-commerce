@@ -4,17 +4,15 @@ import { Star, ShoppingCart, Heart } from 'lucide-react';
 interface Product {
   iid: number;
   id: number;
-  name: string;
+  title: string;
   price: number;
   rating: number;
-  reviews: number;
+  review_count: number;
   image: string;
 }
 
 const ProductGrid: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [cart, setCart] = useState<number[]>([]);
-  const [wishlist, setWishlist] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,22 +28,6 @@ const ProductGrid: React.FC = () => {
 
     fetchProducts();
   }, [__API_URL__]);
-
-  useEffect(() => {
-    console.log(products)
-  }, [products])
-
-  const addToCart = (productId: number) => {
-    setCart(prev => [...prev, productId]);
-  };
-
-  const toggleWishlist = (productId: number) => {
-    setWishlist(prev => 
-      prev.includes(productId) 
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
-    );
-  };
 
   return (
     <section className="py-16 bg-gray-50">
@@ -68,7 +50,7 @@ const ProductGrid: React.FC = () => {
               <div className="relative overflow-hidden">
                 <img
                   src={product.image}
-                  alt={product.name}
+                  alt={product.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 
@@ -76,7 +58,7 @@ const ProductGrid: React.FC = () => {
 
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-500 transition-colors duration-200">
-                  {product.name}
+                  {product.title}
                 </h3>
                 
                 <div className="flex items-center mb-2">
@@ -84,7 +66,7 @@ const ProductGrid: React.FC = () => {
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
                     <span className="ml-1 text-sm text-gray-600">{product.rating}</span>
                   </div>
-                  <span className="text-gray-400 text-sm ml-2">({product.reviews})</span>
+                  <span className="text-gray-400 text-sm ml-2">({product.review_count})</span>
                 </div>
                 
                 <div className="flex items-center justify-between mb-4">
@@ -96,7 +78,6 @@ const ProductGrid: React.FC = () => {
                 </div>
                 
                 <button
-                  onClick={() => addToCart(product.id)}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
