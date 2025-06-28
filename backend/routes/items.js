@@ -1,0 +1,37 @@
+const express = require('express');
+const router = express.Router();
+
+const { Pool } = require('pg');
+require('dotenv').config();
+
+// PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+router.get('/', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM items');
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error querying database:', err);
+      res.status(500).send('Database error');
+    }
+});
+
+router.post('/', async (req, res) => {
+    const { id, title, price, description, photo } = req.body;
+
+    try {
+        const result = await pool.query(
+        'INSERT INTO items (id, title, price, description, photo) VALUES ($1, $2, $3, $4, $5) RETURNING iid, title, price, description, photo',
+        [id, title, price, description, photo]
+    );
+    res.status(201).json({ message: 'Item created', data: result.rows[0] });
+} catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+}
+});
+
+module.exports = router;
