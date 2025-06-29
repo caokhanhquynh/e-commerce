@@ -1,3 +1,4 @@
+const multer = require('multer');
 const express = require('express');
 const router = express.Router();
 
@@ -33,5 +34,23 @@ router.post('/', async (req, res) => {
     res.status(500).send('Server error');
 }
 });
+
+// Save uploaded files to "uploads/" folder
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); // unique filename
+  },
+});
+
+const upload = multer({ storage });
+
+// POST /api/items/upload
+router.post('/upload', upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).send('No file uploaded.');
+  const imageUrl = `/uploads/${req.file.filename}`;
+  res.json({ url: imageUrl });
+});
+
 
 module.exports = router;
