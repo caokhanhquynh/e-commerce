@@ -32,12 +32,32 @@ const AddItemForm: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('image', file);
+  
+    try {
+      const res = await fetch(`${__API_URL__||'http://localhost:3001'}/api/items/upload`, {
+        method: 'POST',
+        body: formData
+      });
+  
+      const data = await res.json();
+      setFormData(prev => ({ ...prev, photo: data.url })); // Save the uploaded image URL
+    } catch (err) {
+      console.error('Upload failed', err);
+    }
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
 
     try {
-      const res = await fetch('http://localhost:3001/api/items', {
+      const res = await fetch(`${__API_URL__||'http://localhost:3001'}/api/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, id: userId })
@@ -60,7 +80,12 @@ const AddItemForm: React.FC = () => {
       <input name="title" placeholder="Title" value={formData.title} onChange={handleChange} className="w-full border p-2 rounded" required />
       <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} className="w-full border p-2 rounded" required />
       <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="w-full border p-2 rounded" required />
-      <input name="photo" placeholder="Photo URL" value={formData.photo} onChange={handleChange} className="w-full border p-2 rounded" required />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        className="w-full border p-2 rounded"
+      />
       <button type="submit" className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600">
         Add Item
       </button>

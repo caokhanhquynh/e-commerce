@@ -1,6 +1,7 @@
 // backend/server.js
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const apiRoutes = require('./routes/api');
@@ -23,6 +24,7 @@ app.use('/api', apiRoutes);
 app.use('/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /////////////////////////////////////////
 
