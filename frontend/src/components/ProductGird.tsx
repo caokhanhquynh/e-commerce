@@ -8,7 +8,7 @@ interface Product {
   price: number;
   rating: number;
   review_count: number;
-  image: string;
+  photo: string;
 }
 
 const ProductGrid: React.FC = () => {
@@ -49,11 +49,10 @@ const ProductGrid: React.FC = () => {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={product.image}
+                  src={`${__API_URL__||'http://localhost:3001'}${product.photo}`} 
                   alt={product.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-48 object-cover"
                 />
-                
               </div>
 
               <div className="p-4">
