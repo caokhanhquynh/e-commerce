@@ -1,6 +1,7 @@
 const multer = require('multer');
 const express = require('express');
 const router = express.Router();
+const cloudinary = require('cloudinary').v2;
 
 const { Pool } = require('pg');
 require('dotenv').config();
@@ -35,22 +36,23 @@ router.post('/', async (req, res) => {
 }
 });
 
-// Save uploaded files to "uploads/" folder
-const storage = multer.diskStorage({
-  destination: 'uploads/',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // unique filename
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
 });
 
-const upload = multer({ storage });
-
+const upload = multer({ dest: 'temp/' });
 // POST /api/items/upload
-router.post('/upload', upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).send('No file uploaded.');
-  const imageUrl = `/uploads/${req.file.filename}`;
-  res.json({ url: imageUrl });
+router.post('/upload', upload.single('image'), async (req, res) => {
+  try{
+    if (!req.file) return res.status(400).send('No file uploaded.');
+    const result = await cloudinary.uploader.upload(req.file.path);
+    res.json({ url: result.secure_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Upload failed');
+  }
 });
-
 
 module.exports = router;
