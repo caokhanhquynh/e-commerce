@@ -49,7 +49,7 @@ const ProductGrid: React.FC = () => {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={`${__API_URL__||'http://localhost:3001'}${product.photo}`} 
+                  src={`${product.photo}`} 
                   alt={product.title}
                   className="w-full h-48 object-cover"
                 />
