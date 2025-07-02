@@ -8,6 +8,7 @@ const apiRoutes = require('./routes/api');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/items');
+const cartRoutes = require('./routes/carts');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,6 +26,7 @@ app.use('/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'temp')));
+app.use('/api/carts', cartRoutes);
 
 /////////////////////////////////////////
 
