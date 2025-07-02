@@ -19,6 +19,25 @@ router.get('/', async (req, res) => {
     }
 });
 
+// GET /api/carts/:id
+router.get('/:id', async (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+      const result = await pool.query(`
+        SELECT c.*, i.title, i.photo, i.price
+        FROM carts c
+        JOIN items i ON c.iid = i.iid
+        WHERE c.id = $1
+      `, [userId]);
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error querying user cart:', err);
+      res.status(500).send('Database error');
+    }
+  });
+  
 router.post('/', async (req, res) => {
     const { id, iid } = req.body;
 
