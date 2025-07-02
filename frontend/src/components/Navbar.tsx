@@ -11,6 +11,8 @@ type User = {
 const Header: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const [cartItems, setCartItems] = useState<any[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -47,6 +49,19 @@ const Header: React.FC = () => {
     localStorage.removeItem('token');
     setUser(null);
     setIsLoggedIn(false);
+  };
+
+  const toggleCart = async () => {
+    if (!showCart) {
+      try {
+        const res = await fetch(`${__API_URL__}/api/carts/${user ? user.id : ''}`);
+        const data = await res.json();
+        setCartItems(data);
+      } catch (err) {
+        console.error('Failed to load cart', err);
+      }
+    }
+    setShowCart(!showCart);
   };
 
 
@@ -90,6 +105,37 @@ const Header: React.FC = () => {
               >
                 Logout
               </button>
+              <button onClick={toggleCart}>
+                <ShoppingCart className="h-5 w-5"/>
+              </button>
+
+              {showCart && (
+                <div className="absolute right-0 top-10 w-72 bg-white shadow-xl rounded-xl border border-gray-200 z-50 p-4">
+                  <h3 className="font-semibold text-gray-800 mb-2">Your Cart</h3>
+
+                  {cartItems.length === 0 ? (
+                    <p className="text-sm text-gray-500">Cart is empty.</p>
+                  ) : (
+                    <ul className="space-y-2 max-h-60 overflow-y-auto">
+                      {cartItems.map(item => (
+                        <li key={item.iid} className="flex items-center space-x-3">
+                          <img
+                            src={item.photo}
+                            alt={item.title}
+                            className="w-12 h-12 object-cover rounded-md border"
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-800">{item.title}</p>
+                            <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                          </div>
+                          <p className="text-sm font-semibold text-gray-900">${item.price}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
             </div>):(
             <div className="hidden sm:flex items-center space-x-3">
               <Link to="/login">
