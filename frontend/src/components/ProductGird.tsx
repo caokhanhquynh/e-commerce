@@ -10,9 +10,15 @@ interface Product {
   review_count: number;
   photo: string;
 }
+type User = {
+  id: string;
+  email: string;
+  name: string;
+};
 
 const ProductGrid: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,6 +34,63 @@ const ProductGrid: React.FC = () => {
 
     fetchProducts();
   }, [__API_URL__]);
+
+  const addToCart = async (itemId: number) => {
+    if (!user) {
+      alert("You must be logged in to add to cart.");
+      return;
+    }
+  
+    try {
+      const res = await fetch(`${__API_URL__}/api/carts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: user.id,
+          iid: itemId,
+        }),
+      });
+  
+      if (!res.ok) throw new Error("Failed to add to cart");
+  
+      const result = await res.json();
+      console.log("Added to cart:", result.data);
+      alert("Added to cart!");
+    } catch (err) {
+      console.error(err);
+      alert("Error adding to cart.");
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUserData();
+    }
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token');
+        return;
+      }
+      setUser({
+        id: payload.id,
+        email: payload.email,
+        name: payload.name,
+      });
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      // Clear invalid token
+      localStorage.removeItem('token');
+    }
+  };
+  
 
   return (
     <section className="py-16 bg-gray-50">
@@ -77,6 +140,7 @@ const ProductGrid: React.FC = () => {
                 </div>
                 
                 <button
+                  onClick={() => addToCart(product.iid)}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
