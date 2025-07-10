@@ -10,6 +10,8 @@ const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/items');
 const cartRoutes = require('./routes/carts');
 const wishlistRoutes = require('./routes/wishlists');
+const orderRoutes = require('./routes/orders');
+const orderItemRoutes = require('./routes/order_items');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +31,8 @@ app.use('/api/items', itemRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'temp')));
 app.use('/api/carts', cartRoutes);
 app.use('/api/wishlists', wishlistRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/order_items', orderItemRoutes);
 
 /////////////////////////////////////////
 
