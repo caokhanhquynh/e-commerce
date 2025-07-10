@@ -65,4 +65,17 @@ router.post('/', async (req, res) => {
 }
 });
 
+// DELETE /api/carts/clear/:id -> remove all cart items for a user
+router.delete('/clear/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    await pool.query('DELETE FROM carts WHERE id = $1', [userId]);
+    res.status(200).json({ message: `Cleared cart for user ${userId}` });
+  } catch (err) {
+    console.error('Error clearing cart:', err);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
