@@ -55,4 +55,16 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
+router.get('/:iid', async (req, res) => {
+  const { iid } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM items WHERE iid = $1', [iid]);
+    if (result.rowCount === 0) return res.status(404).send('Item not found');
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching item:', err);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
