@@ -77,7 +77,7 @@ const Header: React.FC = () => {
   
       // 2. Add each item to order_items
       await Promise.all(cartItems.map(item =>
-        fetch(`${__API_URL__}/api/order-items`, {
+        fetch(`${__API_URL__}/api/order_items`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ oid, iid: item.iid, quantity: item.quantity })
