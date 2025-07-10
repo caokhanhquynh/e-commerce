@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   iid: number;
@@ -19,6 +20,7 @@ type User = {
 const ProductGrid: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -108,6 +110,7 @@ const ProductGrid: React.FC = () => {
           {products.map((product) => (
             <div
               key={product.iid}
+              onClick={() => navigate(`/product/${product.iid}`)}
               className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden border border-gray-100"
             >
               <div className="relative overflow-hidden">
