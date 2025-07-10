@@ -64,6 +64,41 @@ const Header: React.FC = () => {
     setShowCart(!showCart);
   };
 
+  const handleOrder = async () => {
+    try {
+      // 1. Create new order
+      const resOrder = await fetch(`${__API_URL__}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user ? user.id : 0 })
+      });
+      const orderData = await resOrder.json();
+      const oid = orderData.data.oid;
+  
+      // 2. Add each item to order_items
+      await Promise.all(cartItems.map(item =>
+        fetch(`${__API_URL__}/api/order_items`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ oid, iid: item.iid, quantity: item.quantity })
+        })
+      ));
+  
+      // 3. Clear the cart
+      await fetch(`${__API_URL__}/api/carts/clear/${user ? user.id : 0}`, { method: 'DELETE' });
+  
+      // 4. Show toast and refresh
+      alert("Order placed successfully!");
+      setCartItems([]);
+      setShowCart(false);
+  
+    } catch (err) {
+      console.error("Order failed", err);
+      alert("Order failed. Try again.");
+    }
+  };
+  
+
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
@@ -116,6 +151,7 @@ const Header: React.FC = () => {
                   {cartItems.length === 0 ? (
                     <p className="text-sm text-gray-500">Cart is empty.</p>
                   ) : (
+                    <>
                     <ul className="space-y-2 max-h-60 overflow-y-auto">
                       {cartItems.map(item => (
                         <li key={item.iid} className="flex items-center space-x-3">
@@ -132,6 +168,13 @@ const Header: React.FC = () => {
                         </li>
                       ))}
                     </ul>
+                    <button
+                      onClick={handleOrder}
+                      className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-200"
+                    >
+                      Place Order
+                    </button>
+                    </>
                   )}
                 </div>
               )}
