@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 
 interface Product {
   iid: number;
@@ -36,7 +37,17 @@ const ProductDetail = () => {
       <img src={product.photo} alt={product.title} className="w-full h-64 object-cover rounded-lg mb-6" />
       <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
       <p className="text-xl text-gray-700 mb-4">${product.price}</p>
-      <p className="text-gray-600">{product.description}</p>
+      <MDEditor.Markdown 
+        source={product.description} 
+        style={{ 
+          whiteSpace: 'pre-wrap',
+          backgroundColor: 'white',
+          padding: '16px',
+          borderRadius: '8px',
+          // border: '1px solid #e5e7eb',
+          color: 'black'
+        }} 
+      />
     </div>
   );
 };
