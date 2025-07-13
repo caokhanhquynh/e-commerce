@@ -12,6 +12,7 @@ const cartRoutes = require('./routes/carts');
 const wishlistRoutes = require('./routes/wishlists');
 const orderRoutes = require('./routes/orders');
 const orderItemRoutes = require('./routes/order_items');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,7 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/wishlists', wishlistRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/order_items', orderItemRoutes);
+app.use('/api/admin', adminRoutes);
 
 /////////////////////////////////////////
 
