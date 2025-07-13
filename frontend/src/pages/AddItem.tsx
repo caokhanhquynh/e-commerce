@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import MDEditor from '@uiw/react-md-editor';
 
 const AddItemForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -31,6 +32,11 @@ const AddItemForm: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleDescriptionChange = (value: string | undefined) => {
+    setFormData(prev => ({ ...prev, description: value || '' }));
+  };
+
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,7 +85,15 @@ const AddItemForm: React.FC = () => {
       <h2 className="text-xl font-bold">Add New Item</h2>
       <input name="title" placeholder="Title" value={formData.title} onChange={handleChange} className="w-full border p-2 rounded" required />
       <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} className="w-full border p-2 rounded" required />
-      <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="w-full border p-2 rounded" required />
+      {/* <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="w-full border p-2 rounded" required /> */}
+      <div className="border rounded">
+          <MDEditor
+              value={formData.description}
+              onChange={handleDescriptionChange}
+              height={200}
+              data-color-mode="light"
+          />
+      </div>
       <input
         type="file"
         accept="image/*"
